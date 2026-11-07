@@ -1,13 +1,10 @@
 import ipaddress
 import requests
-
-
 def get_geo(ip):
     try:
         ip_obj = ipaddress.ip_address(ip)
         if ip_obj.is_private or ip_obj.is_loopback:
             return None
-
         r = requests.get(f"http://ip-api.com/json/{ip}", timeout=3)
         data = r.json()
 
@@ -19,9 +16,7 @@ def get_geo(ip):
             }
     except:
         pass
-
     return None
-
 def analyze_ips(store):
     alerts = []
     for ip in store.get_ips():
@@ -41,12 +36,10 @@ def analyze_ips(store):
         except ValueError:
             reasons.append("Invalid IP format")
             score += 2
-
         geo = get_geo(ip)
         if geo:
             reasons.append(f"Geo: {geo['country']} / {geo['isp']}")
             score += 1
-            
         alerts.append({
             "ip": ip,
             "risk": score,
